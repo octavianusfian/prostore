@@ -5,7 +5,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
 import type { NextAuthConfig } from "next-auth";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
 export const config = {
   pages: {
@@ -24,20 +23,14 @@ export const config = {
         password: { type: "password" },
       },
       async authorize(credentials) {
-        if (credentials === null) return null;
+        if (!credentials) return null;
 
         const user = await prisma.user.findFirst({
-          where: {
-            email: credentials.email as string,
-          },
+          where: { email: credentials.email as string },
         });
 
-        if (user && user.password) {
-          const isMatch = compareSync(
-            credentials.password as string,
-            user.password
-          );
-
+        if (user?.password) {
+          const isMatch = compareSync(credentials.password as string, user.password);
           if (isMatch) {
             return {
               id: user.id,
@@ -53,7 +46,7 @@ export const config = {
     }),
   ],
   callbacks: {
-    async session({ session, trigger, token, user }: any) {
+    async session({ session, token, user, trigger }: any) {
       session.user.id = token.sub;
       session.user.role = token.role;
       session.user.name = token.name;
@@ -63,28 +56,21 @@ export const config = {
       }
       return session;
     },
-    async jwt({ token, trigger, session, user }: any) {
-      // Assign user field to token
+    async jwt({ token, user, trigger, session }: any) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
         if (user.name === "NO_NAME") {
           token.name = user.email.split("@")[0];
-
-          // Update database
           await prisma.user.update({
-            where: {
-              id: user.id,
-            },
-            data: {
-              name: token.name,
-            },
+            where: { id: user.id },
+            data: { name: token.name },
           });
         }
 
+        // Handle session cart di sini, bukan di middleware
         if (trigger === "signIn" || trigger === "signUp") {
           const cookiesObject = await cookies();
-
           const sessionCartId = cookiesObject.get("sessionCartId")?.value;
 
           if (sessionCartId) {
@@ -93,10 +79,7 @@ export const config = {
             });
 
             if (sessionCart) {
-              await prisma.cart.deleteMany({
-                where: { userId: user.id },
-              });
-
+              await prisma.cart.deleteMany({ where: { userId: user.id } });
               await prisma.cart.update({
                 where: { id: sessionCart.id },
                 data: { userId: user.id },
@@ -111,45 +94,6 @@ export const config = {
       }
 
       return token;
-    },
-    authorized({ request, auth }: any) {
-      // Array of regex patterns of paths we want to protect
-      const protectedPaths = [
-        /\/shipping-address/,
-        /\/payment-method/,
-        /\/place-order/,
-        /\/profile/,
-        /\/user\/(.*)/,
-        /\/order\/(.*)/,
-        /\/admin/,
-      ];
-
-      // Get pathname from req url
-      const { pathname } = request.nextUrl;
-
-      // Check if not authenticated
-      if (!auth && protectedPaths.some((path) => path.test(pathname)))
-        return false;
-
-      // Check session cart cookie
-      if (!request.cookies.get("sessionCartId")) {
-        // Create new session cart id cookie
-
-        const sessionCartId = crypto.randomUUID();
-
-        const newRequestHeaders = new Headers(request.headers);
-        const response = NextResponse.next({
-          request: {
-            headers: newRequestHeaders,
-          },
-        });
-
-        response.cookies.set("sessionCartId", sessionCartId);
-
-        return response;
-      } else {
-        return true;
-      }
     },
   },
 } satisfies NextAuthConfig;
