@@ -34,7 +34,7 @@ model User {
   emailVerified DateTime? @db.Timestamp(6)
   image         String?
   password      String?
-  role          String?   @default("user")
+  role          String   @default("user")
   address       Json?     @db.Json
   paymentMethod String?
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
@@ -128,4 +128,9 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@id([orderId, productId], map: "orderitems_orderId_productId_pk")
+}
+
+model Review {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String      @db.Uuid
 }
