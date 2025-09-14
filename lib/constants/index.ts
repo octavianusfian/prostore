@@ -7,3 +7,51 @@ export const SERVER_URL =
 
 export const LATEST_PRODUCT_LIMIT =
   Number(process.env.LATEST_PRODUCT_LIMIT) || 4;
+
+export const SignInDefaultValues = {
+  email: "",
+  password: "",
+};
+
+export const SignUpDefaultValues = {
+  email: "",
+  password: "",
+  name: "",
+  confirmPassword: "",
+};
+
+export const shippingAddressDefaultValues = {
+  fullName: "",
+  streetAddress: "",
+  city: "",
+  postalCode: "",
+  country: "",
+};
+
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
+  ? process.env.PAYMENT_METHODS.split(", ")
+  : ["PayPal", "Stripe", "CashOnDelivery"];
+
+export const DEFAULT_PAYMENT_METHOD =
+  process.env.DEFAULT_PAYMENT_METHOD ?? "PayPal";
+
+export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;
+
+export const productDefaultValues = {
+  name: "",
+  slug: "",
+  banner: null,
+  rating: "0",
+  price: "0",
+  category: "",
+  images: [],
+  brand: "",
+  description: "",
+  stock: 0,
+  numReviews: "0",
+  isFeatured: false,
+};
+
+export const USER_ROLES = process.env.USER_ROLES
+  ? process.env.USER_ROLES.split(", ")
+  : ["admin", "user"];

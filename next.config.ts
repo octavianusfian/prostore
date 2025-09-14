@@ -3,6 +3,15 @@ import path from "path";
 import os from "os";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        port: "",
+      },
+    ],
+  },
   webpack(config, { isServer }) {
     config.watchOptions = {
       ignored: [
