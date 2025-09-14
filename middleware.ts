@@ -1,30 +1,33 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import type { NextRequest } from "next/server";
 
-export default async function middleware(req: Request) {
-  const session = await auth(); // cek session
-  const url = new URL(req.url);
+export default function middleware(req: NextRequest) {
+  const url = req.nextUrl;
+  console.log(req.cookies);
+  
+  // ambil cookie session bawaan next-auth
+  const sessionCookie =
+    req.cookies.get("authjs.session-token")?.value
 
   const protectedPaths = [
-    /\/shipping-address/,
-    /\/payment-method/,
-    /\/place-order/,
-    /\/profile/,
-    /\/user\/(.*)/,
-    /\/order\/(.*)/,
-    /\/admin/,
+    /^\/shipping-address/,
+    /^\/payment-method/,
+    /^\/place-order/,
+    /^\/profile/,
+    /^\/user\/(.*)/,
+    /^\/order\/(.*)/,
+    /^\/admin/,
   ];
 
   // kalau belum login → redirect ke sign-in
-  if (!session && protectedPaths.some((path) => path.test(url.pathname))) {
+  if (!sessionCookie && protectedPaths.some((p) => p.test(url.pathname))) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
-  // kalau tidak ada sessionCartId → buat cookie
-  const cookies = req.headers.get("cookie") ?? "";
-  if (!cookies.includes("sessionCartId")) {
+  // kalau tidak ada sessionCartId → buat cookie baru
+  if (!req.cookies.get("sessionCartId")) {
     const res = NextResponse.next();
-    res.cookies.set("sessionCartId", crypto.randomUUID());
+    res.cookies.set("sessionCartId", crypto.randomUUID(), { path: "/" });
     return res;
   }
 

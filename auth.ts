@@ -13,7 +13,7 @@ export const config = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60, // 30 hari
   },
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -30,7 +30,10 @@ export const config = {
         });
 
         if (user?.password) {
-          const isMatch = compareSync(credentials.password as string, user.password);
+          const isMatch = compareSync(
+            credentials.password as string,
+            user.password
+          );
           if (isMatch) {
             return {
               id: user.id,
@@ -68,7 +71,7 @@ export const config = {
           });
         }
 
-        // Handle session cart di sini, bukan di middleware
+        // Handle session cart di sini (bukan di middleware)
         if (trigger === "signIn" || trigger === "signUp") {
           const cookiesObject = await cookies();
           const sessionCartId = cookiesObject.get("sessionCartId")?.value;
