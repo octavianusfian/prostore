@@ -6,7 +6,9 @@ export default function middleware(req: NextRequest) {
   console.log(req.cookies);
 
   // ambil cookie session bawaan next-auth
-  const sessionCookie = req.cookies.get("authjs.session-token")?.value;
+  const sessionCookie =
+    req.cookies.get("authjs.session-token")?.value ||
+    req.cookies.get("__Secure-authjs.session-token")?.value;
 
   const protectedPaths = [
     /^\/shipping-address/,
