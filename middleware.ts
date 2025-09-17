@@ -4,10 +4,9 @@ import type { NextRequest } from "next/server";
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
   console.log(req.cookies);
-  
+
   // ambil cookie session bawaan next-auth
-  const sessionCookie =
-    req.cookies.get("authjs.session-token")?.value
+  const sessionCookie = req.cookies.get("authjs.session-token")?.value;
 
   const protectedPaths = [
     /^\/shipping-address/,
@@ -34,14 +33,14 @@ export default function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = {
-  matcher: [
-    "/shipping-address",
-    "/payment-method",
-    "/place-order",
-    "/profile",
-    "/user/:path*",
-    "/order/:path*",
-    "/admin/:path*",
-  ],
-};
+// export const config = {
+//   matcher: [
+//     "/shipping-address",
+//     "/payment-method",
+//     "/place-order",
+//     "/profile",
+//     "/user/:path*",
+//     "/order/:path*",
+//     "/admin/:path*",
+//   ],
+// };
