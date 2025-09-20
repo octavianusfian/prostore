@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
-  console.log(req.cookies);
+  
 
   // ambil cookie session bawaan next-auth
   const sessionCookie =
