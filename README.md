@@ -1,36 +1,179 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📝 Prostore Modern Clothing E-Commerce Platform
 
-## Getting Started
+ProStore is a modern full-stack e-commerce application built with **Next.js**, **TypeScript**, **Tailwind CSS**, **shadcn/ui**, **Supabase**, **Prisma**, and **Stripe**.  
+It provides a seamless shopping experience for customers and a robust admin dashboard for managing products, orders, and analytics.
 
-First, run the development server:
+🔗 **Live Demo:** [prostore.vercel.app](https://prostore-rho-brown.vercel.app/)
+
+## 🖼️ Screenshot
+
+![Task Tracker Screenshot](./public/ss-1.png)
+
+---
+
+## 🚀 Tech Stack
+
+- **Next.js 14 (App Router)**
+- **TypeScript**
+- **Prisma ORM**
+- **Supabase (PostgreSQL Database)**
+- **Tailwind CSS**
+- **Zod** (schema validation)
+- **Vercel** (deployment target)
+- **shadcn/ui**
+- **Stripe** (Checkout Session + Webhooks)
+
+---
+
+## ✨ Features
+
+### 🛒 **Storefront (Customer Side)**
+- Homepage with hero, featured products & categories  
+- Product catalogue with filtering (size, color, price, category)  
+- Product detail page with gallery, variations, stock, and reviews  
+- Advanced search & sorting  
+- Shopping cart (client/server synced)  
+- Stripe checkout integration  
+- Order confirmation page  
+- Review & rating system per product
+  
+### 🛠 **Admin Dashboard**
+- Protected admin access  
+- Product management (CRUD)  
+- Category management  
+- Inventory and product variations  
+- Order management & order status  
+- Basic analytics (revenue, best-selling items)  
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/<your-username>/task-tracker-nextjs.git
+cd prostore
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environtment variabels
+
+create .env
+
+```bash
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/postgres?sslmode=require"
+NEXTAUTH_SECRET=""
+PAYMENT_METHODS="PayPal, Stripe, CashOnDelivery"
+DEFAULT_PAYMENT_METHOD="PayPal"
+
+PAYPAL_API_URL="https://api-m.sandbox.paypal.com"
+PAYPAL_CLIENT_ID=""
+PAYPAL_APP_SECRET=""
+
+UPLOADTHING_TOKEN=''
+
+UPLOADTHING_SECRET=""
+UPLOADTHING_APPID=""
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=""
+STRIPE_SECRET_KEY=""
+
+RESEND_API_KEY=""
+SENDER_EMAIL=""
+```
+
+Make sure to replace credentials with your Supabase connection string
+
+### 4. Set up the database
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 5. Run development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Seeder Project
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx prisma db seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```bash
+.
+├─ app/
+│  ├─ (auth)/
+│  ├─ (root)/
+│  ├─ admin/
+│  ├─ api/
+│  ├─ user/
+│  ├─ favicon.ico
+│  ├─ layout.tsx
+│  ├─ loading.tsx
+│  └─ not-found.tsx
+│
+├─ assets/
+│  ├─ styles/
+│  └─ loader.gif
+│
+├─ components/
+│  ├─ admin/
+│  ├─ shared/
+│  └─ ui/
+│     ├─ deal-countdown.tsx
+│     ├─ footer.tsx
+│     ├─ icon-boxes.tsx
+│     └─ view-all-products-button.tsx
+│
+├─ db/
+│  ├─ prisma.ts
+│  ├─ sample-data.ts
+│  └─ seed.ts
+│
+├─ email/
+│  ├─ index.tsx
+│  └─ purchase-receipt.tsx
+│
+├─ lib/
+│  ├─ actions/
+│  ├─ constants/
+│  ├─ generated/
+│  ├─ paypal.ts
+│  ├─ uploadthing.ts
+│  ├─ utils.ts
+│  └─ validators.ts
+│
+├─ prisma/
+│  ├─ migrations/
+│  └─ schema.prisma
+│
+├─ public/
+│  └─ images/
+│
+├─ tests/
+│  └─ paypal.test.ts
+│
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧩 Future Improvements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Tracking shipment
+- Integrate optimistic UI updates
 
-## Deploy on Vercel
+## 🧑‍💻 Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Octavianus Fian**
+Front-end developer learning fullstack web development
