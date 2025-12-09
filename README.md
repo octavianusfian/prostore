@@ -7,7 +7,7 @@ It provides a seamless shopping experience for customers and a robust admin dash
 
 ## 🖼️ Screenshot
 
-![Task Tracker Screenshot](./public/ss-1.png)
+![Task Tracker Screenshot](./public/ss-readme.png)
 
 ---
 
